@@ -1,3 +1,4 @@
+
 name: Build Absensi 9E APK
 
 on:
@@ -11,12 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Extract project ZIP
+      - name: Extract project
         run: |
-          mkdir project
           unzip -q Absensi9E_Android_FINAL_GOOGLE_OK.zip -d project
-          echo "Project contents:"
-          find project -maxdepth 2 -type f | head -100
+          echo "Project:"
+          ls -la project
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -30,9 +30,9 @@ jobs:
           gradle-version: '8.13'
 
       - name: Build APK
-        working-directory: project
         run: |
-          gradle assembleDebug
+          cd project
+          gradle assembleDebug --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
